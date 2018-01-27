@@ -1,4 +1,6 @@
 import log from 'loglevel';
-log.setLevel('trace');
+import config from 'config';
+
+log.setLevel(config.logLevel);
 
 export default log;

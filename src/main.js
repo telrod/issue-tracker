@@ -32,6 +32,7 @@ app.use(errorHandle);
 const port = config.port;
 app.listen(port, () => {
   log.info(`App is listening on ${port}.`);
+  log.info("Configuration: " + process.env.NODE_ENV);
 });
 
 export default app;

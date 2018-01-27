@@ -3,6 +3,7 @@ import user from './user';
 import issue from './issue';
 import { ensureLogin } from './privilege';
 import { swagDocHandler } from '../utils';
+import config from "../config";
 
 const router = new express.Router();
 
@@ -15,8 +16,9 @@ router.get('/', async (req, res) => {
 // to use Swagger UI to visualize the doc
 router.get('/swagger.json', swagDocHandler);
 
-// uncomment to enforce authentication
-//router.use(ensureLogin);
+if(config.requireAuth) {
+  router.use(ensureLogin);
+}
 
 router.use('/user', user);
 router.use('/issue', issue);

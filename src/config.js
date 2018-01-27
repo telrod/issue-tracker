@@ -1,7 +1,9 @@
-import log from 'log';
+
 const env = process.env.NODE_ENV;
 const common = {
-  port: 3000
+  port: 3000,
+  logLevel: 'trace',
+  requireAuth: false // indicates if logged in user required to make api call
 };
 const config = {
   develop: {
@@ -23,5 +25,4 @@ const config = {
     }
   }
 };
-log.info("config: " + JSON.stringify(config[env]));
 export default Object.assign(common, config[env]);
