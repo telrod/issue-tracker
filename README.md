@@ -1,50 +1,101 @@
-install mongodb (v3.4.6)
+# Issue-Tracker
 
-use mongo doc for install and administration  - https://docs.mongodb.com/manual/introduction/
+This project provides a REST API service for managing issues (e.g. support tickets).  
 
-installing babel transpile - https://blog.jetbrains.com/webstorm/2015/05/ecmascript-6-in-webstorm-transpiling/
+Although this project could be leveraged to build out a full-featured ticketing system, the primary intent of this project is to serve as a coding example.
+
+Features:
+* Create, read, update and delete (CRUD) issues
+* Filtering for issues based on status and priority
+* File attachments for issues
+* Commenting on issues
+* Optional user authentication and authorization
+
+Missing Features (intentionally):
+* Proper document storage.  Attachments are stored on local file system
+* Proper authentication and authorization (i.e. OAuth)
+* User assignment for issues
+* Workflow for processing issues
+* Notifications (e.g. email, sms)
+
+See TODO section for items yet to be completed.
 
 
-install nvm
+# Getting Started
 
-install node version v9.4.0
+This application was built using:
+* nodejs/express
+* mongodb
+* mocha/chai
+* swagger-jsdoc
 
 
-yeoman gnerator - node-rest-api - https://github.com/cody2333/generator-node-rest-api#readme
+## Dependencies
+The following software is needed to run the application:
 
-npm install -g yo
-npm install -g generator-node-rest-api
+[mongodb](https://docs.mongodb.com/manual/installation/) >= v3.4.6
 
-yo node-rest-api
+[node.js](https://nodejs.org/en/download/) >= v8.9.4
 
-Edit the mongodb config in src/config.js manually
+Note: The application _should_ work with older versions, but was developed and tested using the ones specified.
 
+Tip: Although not required, use of a node version manager like [nvm](https://github.com/creationix/nvm) or [n](https://github.com/tj/n) is recommended as allows for easy installation and swapping out different versions of node.
+
+
+## Installation
+
+Clone the project from GitHub to local machine.
+
+```
+git clone git@github.com:telrod/issue-tracker.git
+```
+
+Install library dependancies.
+
+```
 npm install
-npm run start
-npm run test
+```
 
 
+## Running
 
-# Node Rest Api
+To run the application, make sure mongodb is running and use:
 
-A simple template for building a node restful api service
+```
+npm start
+```
 
-## 技术栈
-- nodejs
-- express
-- mongodb
-- mocha
-- swagger-jsdoc
+This will start the app in develop mode, which will watch for code changes as they are made.
 
-## 项目简介
-- 使用ES6/ES7特性
-- 使用ESlint进行语法检测，遵循[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
-- 使用swagger-doc管理文档. Visualize document using Swagger UI.
+Then navigate in web browser to [http://localhost:3000/](http://localhost:3000/) where should get a response of
+```
+{"msg":"Welcome to Issue Tracker."}
+```
+to confirm is working correctly.
 
-## 开发、测试、打包命令
-``` bash
-# mongodb config
-# config locate in: src/config.js
+
+### Commands
+
+The ```package.json``` file contains a number of scripts that can be run depending on need.  These scripts can be run using ```npm run [command]``` where the commands are:
+
+* start - starts the application in develop mode and will watch for code changes
+* test - runs all the tests under the root test directory
+* build - uses [babel](https://babeljs.io/) to transpile ES6/ES7 code to ECMAScript 5 code within the ```dist``` directory
+* serve - runs the application from the ```dist``` directory's transpiled code
+* clean - deletes the transpiled code from the ```dist``` directory
+
+The _clean_, _build_, and _serve_ commands should be used for production mode.
+
+
+# Configuration
+
+There are three _modes_ in which the app can run; **develop**, **test**, and **production**.  These modes loosely define the type of environment in which the code will be run.  Which mode to use is defined by the ```NODE_ENV``` environment property and is already set within the run command scripts.
+
+The following configurations can be updated within the ```config.js``` file.
+
+**Database** - Each of the modes utilize different mongodb databases; issue-tracker, issue-tracker-test, and issue-tracker-production.  By default, the configuration assumes mongodb is running locally and does not require a username/password.
+
+```
 mongodb: {
   host: 'localhost',
   database: 'example'
@@ -56,40 +107,35 @@ mongodb: {
   user:'user',
   password:'pwd'
 }
-# 安装依赖
-yarn
-
-# 运行
-npm run start
-
-# 构建
-npm run build
-
-# 测试
-npm run test
-
-
-
 ```
 
-## DOC
-you can visualize the doc and test the api using Swagger Doc through web browser.
+**Port** - The default port for running the application is 3000.
 
-URL are as below
+**Logging** - The default log level is _trace_.
 
-[http://swagger.daguchuangyi.com/?url=http://localhost:8888/swagger.json#!](http://swagger.daguchuangyi.com/?url=http://localhost:8888/swagger.json#!)
+**Authorization** - By default, user login is NOT required for making API calls.  
 
-## 项目结构
+
+# Testing
+
+Tests utilize the [mocha](https://mochajs.org/) and [chai](http://chaijs.com/) frameworks.  All tests reside within the ```test``` directory.
+
+To run all tests, use:
+
 ```
-/src              项目源码文件夹
-  /models         使用mongoose定义的model的目录
-  /routes         项目路由文件目录
-  /utils          封装的工具函数目录
-  config.js         配置文件
-  log.js            export了一个log模块
-  main.js           程序入口文件
-package.json      
-README.md
-.babelrc
-.eslintrc
+npm test
 ```
+
+
+# Documentation
+
+API documentation is provided via [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc).
+
+To view the API documentation, start the application and then navigate to [http://swagger.daguchuangyi.com/?url=http://localhost:3000/swagger.json#!](http://swagger.daguchuangyi.com/?url=http://localhost:3000/swagger.json#!)  
+
+
+#TODO
+* File attachments
+* Issue comments
+* Filtering for issues based on status and priority
+* Finish CRUD (delete and update) for users
