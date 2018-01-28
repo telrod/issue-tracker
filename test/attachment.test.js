@@ -30,6 +30,7 @@ describe('/POST attachment', async () => {
       request.post('/issue/' + issueId + '/attachment')
         .attach('attachment', 'test/files/' + fileName)
         .end((err, res) => {
+          if (err) return done(err);
           expect(res.status).to.equal(201);
           expect(res.body.name).to.equal(fileName);
           expect(res.body.mimetype).to.equal("image/png");
@@ -63,11 +64,13 @@ describe('/GET attachment', async () => {
       request.post('/issue/' + issueId + '/attachment')
         .attach('attachment', 'test/files/' + fileName)
         .end((err, res) => {
+          if (err) return done(err);
           expect(res.status).to.equal(201);
           const attachmentId = res.body.id;
           request.get('/issue/' + issueId + '/attachment/' + attachmentId)
             .expect('Content-Type', 'image/png')
             .end((err, res) => {
+              if (err) return done(err);
               expect(res.status).to.equal(200);
               done();
             });
@@ -90,10 +93,12 @@ describe('/DELETE attachment', async () => {
       request.post('/issue/' + issueId + '/attachment')
         .attach('attachment', 'test/files/' + fileName)
         .end((err, res) => {
+          if (err) return done(err);
           expect(res.status).to.equal(201);
           const attachmentId = res.body.id;
           request.delete('/issue/' + issueId + '/attachment/' + attachmentId)
             .end((err, res) => {
+              if (err) return done(err);
               expect(res.status).to.equal(204);
               // now verify document deleted
               Document.findById({_id: attachmentId}, (err, deletedAttachment) => {

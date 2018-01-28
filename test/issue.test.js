@@ -37,6 +37,7 @@ describe('Issues', () => {
       request.post('/issue')
         .send(issue)
         .end((err, res) => {
+          if (err) return done(err);
           expect(res.status).to.equal(400);
           expect(res.body).to.have.property("msg");
           done();
@@ -52,6 +53,7 @@ describe('Issues', () => {
       request.post('/issue')
         .send(issue)
         .end((err, res) => {
+          if (err) return done(err);
           expect(res.status).to.equal(201);
           expect(res.body.title).to.equal(issue.title);
           expect(res.body.priority).to.equal(issue.priority);

@@ -29,6 +29,7 @@ describe('/POST comment', async () => {
       request.post('/issue/' + issueId + '/comment')
         .send(comment)
         .end((err, res) => {
+          if (err) return done(err);
           expect(res.status).to.equal(201);
           expect(res.body.message).to.equal(comment.message);
           expect(res.body).to.have.property("createdAt");
@@ -61,9 +62,11 @@ describe('/GET comments', async () => {
       request.post('/issue/' + issueId + '/comment')
         .send(comment)
         .end((err, res) => {
+          if (err) return done(err);
           expect(res.status).to.equal(201);
           request.get('/issue/' + issueId + '/comment')
             .end((err, res) => {
+              if (err) return done(err);
               expect(res.status).to.equal(200);
               expect(res.body).to.be.a('array').that.is.not.empty;
               done();
