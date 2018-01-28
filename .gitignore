@@ -68,3 +68,6 @@ influxdb
 /.idea
 
 temp/
+
+# Default directory for file uploads
+uploads/
