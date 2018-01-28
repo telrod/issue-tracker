@@ -8,7 +8,7 @@
     "serve": "NODE_ENV=production node dist/main",
     "start:babel": "babel-node src/main",
     "start": "NODE_ENV=develop nodemon --watch src --exec npm run start:babel -L",
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/**/*.js --bail -t 2000000"
+    "test": "NODE_ENV=test ./node_modules/.bin/nyc ./node_modules/mocha/bin/mocha --compilers js:babel-core/register test/**/*.js --bail -t 2000000"
   },
   "author": "Tom Elrod",
   "devDependencies": {
@@ -25,6 +25,7 @@
     "install": "^0.8.1",
     "mocha": "^3.2.0",
     "npm": "^3.10.8",
+    "nyc": "^11.4.1",
     "rimraf": "^2.5.2"
   },
   "dependencies": {
