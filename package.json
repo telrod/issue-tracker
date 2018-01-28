@@ -34,6 +34,7 @@
     "loglevel": "^1.4.0",
     "mongoose": "^4.7.0",
     "mongoose-timestamp": "^0.6.0",
+    "multer": "^1.3.0",
     "nodemon": "^1.11.0",
     "randomstring": "^1.1.5",
     "sha1": "^1.1.1",

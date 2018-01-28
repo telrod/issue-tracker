@@ -1,17 +1,13 @@
 import mongoose from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 
-/**
- * Come back and add
- * comments: [{ body: String, date: Date }]
- * to IssueSchema if time
- */
 const Schema = mongoose.Schema;
 const IssueSchema = new Schema({
   title: {type: String, required: [true, 'Issue requires title']},
   priority: {type: Number, required: [true, 'Issue requires priority']},
   status: {type: Number, required: [true, 'Issue requires status']},
-  description: {type: String, default: null}
+  description: {type: String, default: null},
+  attachments: [{ type: Schema.Types.ObjectId, ref: 'document' }]
 });
 IssueSchema.plugin(timestamps);
 
