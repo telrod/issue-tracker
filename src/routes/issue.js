@@ -131,6 +131,10 @@ router.delete('/:id', async(req, res, next) => {
   }
 });
 
+/*****************
+ * Attachments   *
+ *****************/
+
 router.post('/:id/attachment', upload.single('attachment'), async(req, res, next) => {
   const id = req.params.id;
 
@@ -224,5 +228,64 @@ router.delete('/:id/attachment/:attachmentId', async(req, res, next) => {
   }
 
 });
+
+/*****************
+ * Comments      *
+ *****************/
+
+router.post('/:id/comment', async(req, res, next) => {
+  if (!req.is('application/json')) {
+    return next(
+      new Error("Expects Content-Type: 'application/json'")
+    );
+  }
+
+  const id = req.params.id;
+
+  try {
+    // first need to check that id is valid for an issue
+    let existingIssue = await Issue.findById({_id: id});
+    if (!existingIssue) {
+      return res.status(404).json({msg: 'Issue not found by id: ' + id});
+    } else {
+      const data = req.body || {};
+      log.debug("comment message: " + data);
+      let comment = {
+        message: data.message,
+        createdAt: new Date()
+      };
+      // now update the issue to include new comment
+      existingIssue.comments.push(comment);
+      await existingIssue.save();
+
+      log.debug('Created comment: ' + comment);
+      return res.status(201).send(comment);
+    }
+  } catch (err) {
+    log.error(err);
+    next(err);
+  }
+
+});
+
+router.get('/:id/comment', async(req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    // first need to check that id is valid for an issue
+    let existingIssue = await Issue.findById({_id: id});
+    if (!existingIssue) {
+      return res.status(404).json({msg: 'Issue not found by id: ' + id});
+    } else {
+      let comments = existingIssue.comments;
+      return res.send(comments);
+    }
+  } catch (err) {
+    log.error(err);
+    next(err);
+  }
+
+});
+
 
 export default router;

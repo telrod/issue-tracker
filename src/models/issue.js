@@ -7,7 +7,8 @@ const IssueSchema = new Schema({
   priority: {type: Number, required: [true, 'Issue requires priority']},
   status: {type: Number, required: [true, 'Issue requires status']},
   description: {type: String, default: null},
-  attachments: [{ type: Schema.Types.ObjectId, ref: 'document' }]
+  attachments: [{ type: Schema.Types.ObjectId, ref: 'document' }],
+  comments: [{ message: String, createdAt: Date }]
 });
 IssueSchema.plugin(timestamps);
 
