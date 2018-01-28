@@ -3,6 +3,7 @@ import log from 'log';
 import multer from 'multer';
 import config from 'config';
 import fs from 'fs';
+import del from 'del';
 
 import { Issue, Document } from 'models';
 
@@ -202,11 +203,18 @@ router.delete('/:id/attachment/:attachmentId', async(req, res, next) => {
     if (!existingIssue) {
       return res.status(404).json({msg: 'Attachment not found.'});
     } else {
+      // remove attachment from issue array
       existingIssue.attachments = existingIssue.attachments.filter(item => item != attachmentId);
       log.debug("existingIssue: " + existingIssue);
       await existingIssue.save();
 
-      await Document.findByIdAndRemove(attachmentId);
+      // remove document from mongo
+      const deletedDocument = await Document.findByIdAndRemove(attachmentId);
+      log.debug("deleted document: " + deletedDocument);
+      // remove document from filesystem
+      if(deletedDocument) {
+        del.sync([deletedDocument.path]);
+      }
 
       return res.status(204).json({msg: 'Attachment successfully deleted.'});
     }
