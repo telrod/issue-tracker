@@ -1,4 +1,3 @@
-// process.env.NODE_ENV = 'test';
 
 import 'babel-polyfill';
 import app from '../src/main';

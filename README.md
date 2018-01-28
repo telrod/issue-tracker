@@ -109,6 +109,8 @@ mongodb: {
 }
 ```
 
+**Upload Path** - The directory in which uploaded attachment files will be stored on the local filesystem.  The default directory is ```uploads``` off the root project directory.
+
 **Port** - The default port for running the application is 3000.
 
 **Logging** - The default log level is _trace_.
@@ -134,8 +136,9 @@ API documentation is provided via [swagger-jsdoc](https://www.npmjs.com/package/
 To view the API documentation, start the application and then navigate to [http://swagger.daguchuangyi.com/?url=http://localhost:3000/swagger.json#!](http://swagger.daguchuangyi.com/?url=http://localhost:3000/swagger.json#!)  
 
 
-#TODO
-* File attachments
+# TODO
+
 * Issue comments
 * Filtering for issues based on status and priority
 * Finish CRUD (delete and update) for users
+* Delete uploaded files on local filesystem after running attachment tests

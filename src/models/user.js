@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import timestamps from 'mongoose-timestamp';
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -7,6 +8,7 @@ const UserSchema = new Schema({
   role: String,
   token: String
 });
+UserSchema.plugin(timestamps);
 
 UserSchema.options.toJSON = UserSchema.options.toJSON || {};
 UserSchema.options.toJSON.transform = (doc, ret) => {

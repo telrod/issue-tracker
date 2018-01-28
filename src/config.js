@@ -3,6 +3,7 @@ const env = process.env.NODE_ENV;
 const common = {
   port: 3000,
   logLevel: 'trace',
+  uploadPath: 'uploads',
   requireAuth: false // indicates if logged in user required to make api call
 };
 const config = {
