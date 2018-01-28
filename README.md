@@ -141,3 +141,4 @@ To view the API documentation, start the application and then navigate to [http:
 * Issue comments
 * Filtering for issues based on status and priority
 * Finish CRUD (delete and update) for users
+* Delete uploaded files on local filesystem after running attachment tests
