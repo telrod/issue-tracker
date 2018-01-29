@@ -46,8 +46,8 @@ describe('Issues', () => {
     it('should create a new issue when success', (done) => {
       let issue = {
         title: "Test",
-        priority: 1,
-        status: 1,
+        priority: "Major",
+        status: "TODO",
         description: "This is a test"
       };
       request.post('/issue')
@@ -89,8 +89,8 @@ describe('Issues', () => {
     it('should return issue by id when success', (done) => {
       let issue = new Issue ({
         title: "Test",
-        priority: 1,
-        status: 1,
+        priority: "Major",
+        status: "TODO",
         description: "This is a test"
       });
       issue.save((error, newIssue) => {
@@ -115,14 +115,14 @@ describe('Issues', () => {
     it('should update only attributes passed for issue', (done) => {
       let issue = new Issue ({
         title: "Test",
-        priority: 1,
-        status: 1,
+        priority: "Major",
+        status: "TODO",
         description: "This is a test"
       });
       issue.save((error, newIssue) => {
         let changedIssue = {
           title: "Updated Test",
-          priority: 2
+          priority: "Minor"
         };
         request.patch('/issue/' + newIssue.id)
           .send(changedIssue)
@@ -146,15 +146,15 @@ describe('Issues', () => {
     it('should update all attributes on existing issue', (done) => {
       let issue = new Issue ({
         title: "Test",
-        priority: 1,
-        status: 1,
+        priority: "Major",
+        status: "TODO",
         description: "This is a test"
       });
       issue.save((error, newIssue) => {
         let changedIssue = {
           title: "Updated Test",
-          priority: 2,
-          status: 3
+          priority: "Minor",
+          status: "IN PROGRESS"
         };
         request.put('/issue/' + newIssue.id)
           .send(changedIssue)
@@ -195,8 +195,8 @@ describe('Issues', () => {
     it('should delete issue by id when success', (done) => {
       let issue = new Issue ({
         title: "Test",
-        priority: 1,
-        status: 1,
+        priority: "Major",
+        status: "TODO",
         description: "This is a test"
       });
       issue.save((error, newIssue) => {
