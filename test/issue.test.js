@@ -101,8 +101,40 @@ describe('Issues', () => {
   describe('/POST issue', async () => {
     it('should fail to create a new issue with no title', (done) => {
       let issue = {
-        priority: 1,
-        status: 1,
+        priority: "Major",
+        status: "TODO",
+        description: "This is a test"
+      };
+      request.post('/issue')
+        .send(issue)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.property("msg");
+          done();
+        });
+    });
+    it('should fail to create a new issue with invalid status', (done) => {
+      let issue = {
+        title: "Test",
+        priority: "Major",
+        status: "foo",
+        description: "This is a test"
+      };
+      request.post('/issue')
+        .send(issue)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.property("msg");
+          done();
+        });
+    });
+    it('should fail to create a new issue with invalid priority', (done) => {
+      let issue = {
+        title: "Test",
+        priority: "foo",
+        status: "TODO",
         description: "This is a test"
       };
       request.post('/issue')

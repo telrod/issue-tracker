@@ -117,7 +117,7 @@ router.post('/create', async (req, res, next) => {
       token,
     });
     user = await user.save();
-    return res.send(user);
+    return res.status(201).send(user);
   } catch (err) {
     log.error(err);
     next(err);
