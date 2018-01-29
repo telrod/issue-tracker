@@ -4,8 +4,8 @@ import timestamps from 'mongoose-timestamp';
 const Schema = mongoose.Schema;
 const IssueSchema = new Schema({
   title: {type: String, required: [true, 'Issue requires title']},
-  priority: {type: Number, required: [true, 'Issue requires priority']},
-  status: {type: Number, required: [true, 'Issue requires status']},
+  priority: {type: String, enum: ['Critical', 'Major', 'Minor', 'Trivial'], default: 'Major'},
+  status: {type: String, enum: ['TODO', 'IN PROGRESS', 'DONE'], default: 'TODO'},
   description: {type: String, default: null},
   attachments: [{ type: Schema.Types.ObjectId, ref: 'document' }],
   comments: [{ message: String, createdAt: Date }]
@@ -36,9 +36,11 @@ const Issue = mongoose.model('issue', IssueSchema);
  *       title:
  *         type: string
  *       priority:
- *         type: integer
+ *         type: string
+ *         enum: ['Critical', 'Major', 'Minor', 'Trivial']
  *       status:
- *         type: integer
+ *         type: string
+ *         enum: ['TODO', 'IN PROGRESS', 'DONE']
  *       description:
  *         type: string
  *   Issue:
@@ -61,9 +63,11 @@ const Issue = mongoose.model('issue', IssueSchema);
  *       title:
  *         type: string
  *       priority:
- *         type: integer
+ *         type: string
+ *         enum: ['Critical', 'Major', 'Minor', 'Trivial']
  *       status:
- *         type: integer
+ *         type: string
+ *         enum: ['TODO', 'IN PROGRESS', 'DONE']
  *       description:
  *         type: string
  *       attachments:

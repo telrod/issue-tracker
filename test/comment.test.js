@@ -17,8 +17,8 @@ describe('/POST comment', async () => {
   it('should create a new comment for issue when success', (done) => {
     let issue = new Issue({
       title: "Test Attachment",
-      priority: 1,
-      status: 1,
+      priority: "Major",
+      status: "TODO",
       description: "This is a test"
     });
     issue.save((error, newIssue) => {
@@ -50,8 +50,8 @@ describe('/GET comments', async () => {
   it('should get comments for issue when success', (done) => {
     let issue = new Issue({
       title: "Test Attachment",
-      priority: 1,
-      status: 1,
+      priority: "Major",
+      status: "TODO",
       description: "This is a test"
     });
     issue.save((error, newIssue) => {

@@ -20,8 +20,8 @@ describe('/POST attachment', async () => {
   it('should create a new image attachment for issue when success', (done) => {
     let issue = new Issue({
       title: "Test Attachment",
-      priority: 1,
-      status: 1,
+      priority: "Major",
+      status: "TODO",
       description: "This is a test"
     });
     issue.save((error, newIssue) => {
@@ -54,8 +54,8 @@ describe('/GET attachment', async () => {
   it('should stream image attachment for issue when success', (done) => {
     let issue = new Issue({
       title: "Test Attachment",
-      priority: 1,
-      status: 1,
+      priority: "Major",
+      status: "TODO",
       description: "This is a test"
     });
     issue.save((error, newIssue) => {
@@ -83,8 +83,8 @@ describe('/DELETE attachment', async () => {
   it('should delete image attachment for issue when success', (done) => {
     let issue = new Issue({
       title: "Test Attachment",
-      priority: 1,
-      status: 1,
+      priority: "Major",
+      status: "TODO",
       description: "This is a test"
     });
     issue.save((error, newIssue) => {

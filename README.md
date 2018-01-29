@@ -138,9 +138,9 @@ To view the API documentation, start the application and then navigate to [http:
 
 # TODO
 
-* Filtering for issues based on status and priority
 * Finish CRUD (delete and update) for users
 * Delete uploaded files on local filesystem after running attachment tests
 * Add pagination (e.g. mongoose-paginate)
 * Remove _id attribute from issue.comments array
-* enum for priority and status attributes within issue
+* Convert auth to use OAuth and require user for api calls so can add User as attribute to issue, attachment, and comment.
+
