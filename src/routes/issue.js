@@ -18,6 +18,17 @@ const upload = multer({dest: config.uploadPath});
  *     description: Return all issues.
  *     tags:
  *       - Issue
+ *     parameters:
+ *      - in: query
+ *        name: status
+ *        type: string
+ *        required: false
+ *        description: filter issues by status (TODO, IN PROGRESS, DONE)
+ *      - in: query
+ *        name: priority
+ *        type: string
+ *        required: false
+ *        description: filter issues by priority (Critical, Major, Minor, Trivial)
  *     responses:
  *       200:
  *         description: Array of issues
@@ -28,7 +39,13 @@ const upload = multer({dest: config.uploadPath});
  */
 router.get('/', async (req, res, next) => {
   try {
-    const issues = await Issue.find().populate('attachments');
+    let issues = {};
+    const query = req.query;
+    if(query) {
+      issues = await Issue.find(query).populate('attachments');
+    } else {
+      issues = await Issue.find().populate('attachments');
+    }
     return res.send({issues});
   } catch (err) {
     log.error("Error geeting issues", err);

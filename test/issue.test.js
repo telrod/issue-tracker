@@ -14,7 +14,7 @@ describe('Issues', () => {
   });
 
   describe('/GET issue', async () => {
-    it('should return empty issues when success', (done) => {
+    it('should return empty issues array when success', (done) => {
       request.get('/issue')
         .end((err, res) => {
           if (err) return done(err);
@@ -24,6 +24,77 @@ describe('Issues', () => {
           expect(issueArray).to.be.a('array').that.is.empty;
           done();
         });
+    });
+  });
+
+  describe('/GET issue', async () => {
+    it('should return non-empty issues array when success', (done) => {
+      let issue = new Issue({
+        title: "Test",
+        priority: "Major",
+        status: "TODO",
+        description: "This is a test"
+      });
+      issue.save((error, newIssue) => {
+        request.get('/issue')
+          .end((err, res) => {
+            if (err) return done(err);
+            expect(res.status).to.equal(200);
+            expect(res.body).to.be.a('object');
+            let issueArray = res.body.issues;
+            expect(issueArray).to.be.a('array').that.is.not.empty;
+            done();
+          });
+      });
+    });
+  });
+
+  describe('/GET issue', async () => {
+    it('should return filter issues array when success', (done) => {
+      let issue = new Issue({
+        title: "Test",
+        priority: "Major",
+        status: "TODO",
+        description: "This is a test"
+      });
+      let issue2 = new Issue({
+        title: "Test",
+        priority: "Minor",
+        status: "TODO",
+        description: "This is a test"
+      });
+      issue.save((error, newIssue) => {
+        issue2.save((error, newIssue) => {
+          request.get('/issue?priority=Major')
+            .end((err, res) => {
+              if (err) return done(err);
+              expect(res.status).to.equal(200);
+              expect(res.body).to.be.a('object');
+              let issueArray = res.body.issues;
+              expect(issueArray).to.be.a('array').that.is.not.empty;
+              expect(issueArray).to.have.lengthOf(1);
+              request.get('/issue?status=TODO')
+                .end((err, res) => {
+                  if (err) return done(err);
+                  expect(res.status).to.equal(200);
+                  expect(res.body).to.be.a('object');
+                  let issueArray = res.body.issues;
+                  expect(issueArray).to.be.a('array').that.is.not.empty;
+                  expect(issueArray).to.have.lengthOf(2);
+                  request.get('/issue?status=TODO&priority=Major')
+                    .end((err, res) => {
+                      if (err) return done(err);
+                      expect(res.status).to.equal(200);
+                      expect(res.body).to.be.a('object');
+                      let issueArray = res.body.issues;
+                      expect(issueArray).to.be.a('array').that.is.not.empty;
+                      expect(issueArray).to.have.lengthOf(1);
+                      done();
+                    });
+                });
+            });
+        });
+      });
     });
   });
 
