@@ -23,5 +23,62 @@ IssueSchema.options.toJSON.transform = (doc, ret) => {
 
 const Issue = mongoose.model('issue', IssueSchema);
 
+/**
+ * @swagger
+ * definitions:
+ *   NewIssue:
+ *     type: object
+ *     required:
+ *      - title
+ *      - priority
+ *      - status
+ *     properties:
+ *       title:
+ *         type: string
+ *       priority:
+ *         type: integer
+ *       status:
+ *         type: integer
+ *       description:
+ *         type: string
+ *   Issue:
+ *     type: object
+ *     required:
+ *      - id
+ *      - title
+ *      - priority
+ *      - status
+ *     properties:
+ *       id:
+ *         type: string
+ *         default: objectId
+ *       createdAt:
+ *         type: string
+ *         format: date-time
+ *       updatedAt:
+ *         type: string
+ *         format: date-time
+ *       title:
+ *         type: string
+ *       priority:
+ *         type: integer
+ *       status:
+ *         type: integer
+ *       description:
+ *         type: string
+ *       attachments:
+ *         type: array
+ *         items:
+ *          $ref: '#/definitions/Document'
+ *       comments:
+ *         type: array
+ *         items:
+ *          properties:
+ *            message:
+ *              type: string
+ *            createdAt:
+ *              type: string
+ *              format: date-time
+ */
 
 export default Issue;

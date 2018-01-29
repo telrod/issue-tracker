@@ -25,5 +25,23 @@ DocumentSchema.options.toJSON.transform = (doc, ret) => {
 
 const Document = mongoose.model('document', DocumentSchema);
 
+/**
+ * @swagger
+ * definitions:
+ *   Document:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: string
+ *         default: objectId
+ *       name:
+ *         type: string
+ *       encoding:
+ *         type: string
+ *       mimetype:
+ *         type: string
+ *       size:
+ *         type: integer
+ */
 
 export default Document;

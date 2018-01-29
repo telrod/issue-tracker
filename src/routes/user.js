@@ -15,6 +15,8 @@ const router = new express.Router();
  *   get:
  *     summary: user list
  *     description: return user list
+ *     produces:
+ *      - application/json*
  *     tags:
  *       - User
  *     responses:
@@ -37,12 +39,11 @@ router.get('/', async (req, res) => {
  * @swagger
  * /user/login:
  *   post:
- *     summary: user login
  *     description: user login,return user info with token
- *     tags:
- *       - User
+ *     produces:
+ *       - application/json
  *     parameters:
- *       - username: user
+ *       - name: user
  *         in: body
  *         required: true
  *         description: user and password
@@ -84,7 +85,7 @@ router.post('/login', async (req, res, next) => {
  *     tags:
  *       - User
  *     parameters:
- *       - username: user
+ *       - name: user
  *         in: body
  *         required: true
  *         description: username and password
