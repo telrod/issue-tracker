@@ -267,7 +267,7 @@ router.delete('/:id', async(req, res, next) => {
  * @swagger
  * /issue/{issueId}/attachment:
  *   post:
- *     summary: Create attachment
+ *     summary: Create an attachment
  *     description: Uploads file as attachment to specified issue
  *     tags:
  *       - Attachment
@@ -387,7 +387,7 @@ router.get('/:id/attachment/:attachmentId', async(req, res, next) => {
  * @swagger
  * /issue/{issueId}/attachment/{attachmentId}:
  *   delete:
- *     summary: Remove issue attachment
+ *     summary: Remove an attachment
  *     description: Deletes issue attachment by specified id.
  *     tags:
  *       - Attachment
