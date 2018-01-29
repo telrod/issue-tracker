@@ -138,8 +138,9 @@ To view the API documentation, start the application and then navigate to [http:
 
 # TODO
 
-* Issue comments
-* Swagger doc for issue route
 * Filtering for issues based on status and priority
 * Finish CRUD (delete and update) for users
 * Delete uploaded files on local filesystem after running attachment tests
+* Add pagination (e.g. mongoose-paginate)
+* Remove _id attribute from issue.comments array
+* enum for priority and status attributes within issue

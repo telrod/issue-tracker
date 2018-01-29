@@ -10,9 +10,25 @@ import { Issue, Document } from 'models';
 const router = new express.Router();
 const upload = multer({dest: config.uploadPath});
 
+/**
+ * @swagger
+ * /issue:
+ *   get:
+ *     summary: Get all issues
+ *     description: Return all issues.
+ *     tags:
+ *       - Issue
+ *     responses:
+ *       200:
+ *         description: Array of issues
+ *         schema:
+ *           type: array
+ *           items:
+ *            $ref: '#/definitions/Issue'
+ */
 router.get('/', async (req, res, next) => {
   try {
-    const issues = await Issue.find();
+    const issues = await Issue.find().populate('attachments');
     return res.send({issues});
   } catch (err) {
     log.error("Error geeting issues", err);
@@ -20,6 +36,26 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /issue/{issueId}:
+ *   get:
+ *     tags:
+ *       - Issue
+ *     summary: Get an issue
+ *     description: Gets a specific issue by id
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id of issue to be fetched
+ *     responses:
+ *       200:
+ *         description: An issue object
+ *         schema:
+ *          $ref: '#/definitions/Issue'
+ */
 router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
   try {
@@ -35,6 +71,30 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /issue:
+ *   post:
+ *     summary: Create issue
+ *     description: Create new issue
+ *     tags:
+ *       - Issue
+ *     parameters:
+ *       - name: issue
+ *         in: body
+ *         required: true
+ *         schema:
+ *          $ref: '#/definitions/NewIssue'
+ *     responses:
+ *       201:
+ *         description: New issue
+ *         headers:
+ *          Location:
+ *            type: string
+ *            description: URL to fetch newly created issue
+ *         schema:
+ *          $ref: '#/definitions/Issue'
+ */
 router.post('/', async (req, res, next) => {
   if (!req.is('application/json')) {
     return next(
@@ -61,6 +121,31 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /issue/{issueId}:
+ *   put:
+ *     summary: Overwrite issue
+ *     description: Replaces contents of issue (i.e. overwrite). If attributes passed are empty, will be replaced with empty attributes in datastore.  Attributes to not be updated would be id, createdAt, updatedAt, and attachments.
+ *     tags:
+ *       - Issue
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id of issue to be overwritten
+ *       - name: issue
+ *         in: body
+ *         required: true
+ *         schema:
+ *          $ref: '#/definitions/Issue'
+ *     responses:
+ *       200:
+ *         description: Updated issue
+ *         schema:
+ *          $ref: '#/definitions/Issue'
+ */
 router.put('/:id', async (req, res, next) => {
   if (!req.is('application/json')) {
     return next(
@@ -91,6 +176,31 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /issue/{issueId}:
+ *   patch:
+ *     summary: Update issue
+ *     description: Updates contents of issue for the attributes passed in request body and only the attributes passed (i.e. attributes not passed will remain the same).
+ *     tags:
+ *       - Issue
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Issue ID to be update
+ *       - name: issue
+ *         in: body
+ *         required: true
+ *         schema:
+ *          $ref: '#/definitions/Issue'
+ *     responses:
+ *       200:
+ *         description: Updated issue
+ *         schema:
+ *          $ref: '#/definitions/Issue'
+ */
 router.patch('/:id', async (req, res, next) => {
   if (!req.is('application/json')) {
     return next(
@@ -115,6 +225,24 @@ router.patch('/:id', async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /issue/{issueId}:
+ *   delete:
+ *     summary: Remove issue
+ *     description: Deletes issue by specified id.
+ *     tags:
+ *       - Issue
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id for issue to be deleted
+ *     responses:
+ *       204:
+ *         description: No content if successful
+ */
 router.delete('/:id', async(req, res, next) => {
   const id = req.params.id;
   try {
@@ -135,6 +263,36 @@ router.delete('/:id', async(req, res, next) => {
  * Attachments   *
  *****************/
 
+/**
+ * @swagger
+ * /issue/{issueId}/attachment:
+ *   post:
+ *     summary: Create an attachment
+ *     description: Uploads file as attachment to specified issue
+ *     tags:
+ *       - Attachment
+ *     consumes:
+ *      - multipart/form-data
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id for issue create attachment for
+ *       - in: formData
+ *         name: attachment
+ *         type: file
+ *         description: The file to upload
+ *     responses:
+ *       201:
+ *         description: New attachment
+ *         headers:
+ *          Location:
+ *            type: string
+ *            description: URL to fetch newly created issue
+ *         schema:
+ *          $ref: '#/definitions/Document'
+ */
 router.post('/:id/attachment', upload.single('attachment'), async(req, res, next) => {
   const id = req.params.id;
 
@@ -170,6 +328,35 @@ router.post('/:id/attachment', upload.single('attachment'), async(req, res, next
 
 });
 
+/**
+ * @swagger
+ * /issue/{issueId}/attachment/{attachmentId}:
+ *   get:
+ *     tags:
+ *       - Attachment
+ *     summary: Get an attachment
+ *     description: Streams a specific attachment file by issue and attachment id
+ *     produces:
+ *      - image/png
+ *      - image/gif
+ *      - image/jpeg
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id of issue to be fetched
+ *       - name: attachmentId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id of attachment to be fetched
+ *     responses:
+ *       200:
+ *         description: An attachment file
+ *         schema:
+ *          type: file
+ */
 router.get('/:id/attachment/:attachmentId', async(req, res, next) => {
   const id = req.params.id;
   const attachmentId = req.params.attachmentId;
@@ -196,6 +383,29 @@ router.get('/:id/attachment/:attachmentId', async(req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /issue/{issueId}/attachment/{attachmentId}:
+ *   delete:
+ *     summary: Remove an attachment
+ *     description: Deletes issue attachment by specified id.
+ *     tags:
+ *       - Attachment
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id for issue
+ *       - name: attachmentId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id of attachment to be deleted
+ *     responses:
+ *       204:
+ *         description: No content if successful
+ */
 router.delete('/:id/attachment/:attachmentId', async(req, res, next) => {
   const id = req.params.id;
   const attachmentId = req.params.attachmentId;
@@ -233,6 +443,39 @@ router.delete('/:id/attachment/:attachmentId', async(req, res, next) => {
  * Comments      *
  *****************/
 
+/**
+ * @swagger
+ * /issue/{issueId}/comment:
+ *   post:
+ *     summary: Create comment
+ *     description: Adds comment to issue
+ *     tags:
+ *       - Comment
+ *     parameters:
+ *       - in: body
+ *         name: comment
+ *         schema:
+ *          type: object
+ *          properties:
+ *            message:
+ *              type: string
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id for issue create comment for
+ *     responses:
+ *       201:
+ *         description: New comment
+ *         schema:
+ *          type: object
+ *          properties:
+ *            message:
+ *              type: string
+ *            createdAt:
+ *              type: string
+ *              format: date-time
+ */
 router.post('/:id/comment', async(req, res, next) => {
   if (!req.is('application/json')) {
     return next(
@@ -268,6 +511,33 @@ router.post('/:id/comment', async(req, res, next) => {
 
 });
 
+/**
+ * @swagger
+ * /issue/{issueId}/comment:
+ *   get:
+ *     summary: Get comments
+ *     description: Gets all comments for a specified issue
+ *     tags:
+ *       - Comment
+ *     parameters:
+ *       - name: issueId
+ *         in: path
+ *         type: string
+ *         required: true
+ *         description: Id for issue get comments for
+ *     responses:
+ *       200:
+ *         description: All issue comments
+ *         schema:
+ *          type: array
+ *          items:
+ *            properties:
+ *              message:
+ *                type: string
+ *              createdAt:
+ *                type: string
+ *                format: date-time
+ */
 router.get('/:id/comment', async(req, res, next) => {
   const id = req.params.id;
 
