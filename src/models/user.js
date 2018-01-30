@@ -27,7 +27,7 @@ const User = mongoose.model('user', UserSchema);
  *   User:
  *     type: object
  *     properties:
- *        id:
+ *       id:
  *         type: string
  *         default: objectId
  *       username:

@@ -13,4 +13,12 @@ describe('test routes/index.js', async () => {
       done();
     });
   });
+  it('should return swagger json when success', (done) => {
+    request.get('/swagger.json')
+    .expect(200)
+    .end((err, res) => {
+      if (err) return done(err);
+      done();
+    });
+  });
 });

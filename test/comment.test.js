@@ -74,4 +74,21 @@ describe('/GET comments', async () => {
     })
     });
   });
+  it('should error with invalid issue id', (done) => {
+    let comment = {
+      message: 'This is a test comment'
+    };
+      request.post('/issue/foo/comment')
+        .send(comment)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(400);
+          request.get('/issue/foo/comment')
+            .end((err, res) => {
+              if (err) return done(err);
+              expect(res.status).to.equal(400);
+              done();
+            });
+        });
+  });
 });
