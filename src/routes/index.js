@@ -1,14 +1,14 @@
 import express from 'express';
 import user from './user';
 import issue from './issue';
-import { ensureLogin } from './privilege';
-import { swagDocHandler } from '../utils';
+import {ensureLogin} from './privilege';
+import {swagDocHandler} from '../utils';
 import config from "../config";
 
 const router = new express.Router();
 
 router.get('/', async (req, res) => {
-  res.send({ msg: 'Welcome to Issue Tracker.' });
+  res.send({msg: 'Welcome to Issue Tracker.'});
 });
 
 // return swagger doc json data.
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // to use Swagger UI to visualize the doc
 router.get('/swagger.json', swagDocHandler);
 
-if(config.requireAuth) {
+if (config.requireAuth) {
   router.use(ensureLogin);
 }
 

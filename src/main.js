@@ -5,7 +5,7 @@ import routes from 'routes';
 import cors from 'cors';
 import log from 'log';
 import config from 'config';
-import { errorHandle, db } from 'utils';
+import {errorHandle, db} from 'utils';
 
 db.init();
 

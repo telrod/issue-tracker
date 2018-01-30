@@ -1,4 +1,3 @@
-
 import 'babel-polyfill';
 import app from '../src/main';
 import Issue from '../src/models/issue';
@@ -172,25 +171,25 @@ describe('Issues', () => {
 
   describe('/GET:id issue', async () => {
     it('should return error when id does not valid', (done) => {
-        request.get('/issue/foo')
-          .end((err, res) => {
-            if (err) return done(err);
-            expect(res.status).to.equal(400);
-            expect(res.body).to.have.property("msg");
-            done();
-          });
+      request.get('/issue/foo')
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.property("msg");
+          done();
+        });
     });
     it('should return not found when id does not exist', (done) => {
-        request.get('/issue/5a6902152c666e77a4452044')
-          .end((err, res) => {
-            if (err) return done(err);
-            expect(res.status).to.equal(404);
-            expect(res.body).to.have.property("msg");
-            done();
-          });
+      request.get('/issue/5a6902152c666e77a4452044')
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(404);
+          expect(res.body).to.have.property("msg");
+          done();
+        });
     });
     it('should return issue by id when success', (done) => {
-      let issue = new Issue ({
+      let issue = new Issue({
         title: "Test",
         priority: "Major",
         status: "TODO",
@@ -216,7 +215,7 @@ describe('Issues', () => {
 
   describe('/PATCH:id issue', async () => {
     it('should update only attributes passed for issue', (done) => {
-      let issue = new Issue ({
+      let issue = new Issue({
         title: "Test",
         priority: "Major",
         status: "TODO",
@@ -247,7 +246,7 @@ describe('Issues', () => {
 
   describe('/PUT:id issue', async () => {
     it('should update all attributes on existing issue', (done) => {
-      let issue = new Issue ({
+      let issue = new Issue({
         title: "Test",
         priority: "Major",
         status: "TODO",
@@ -296,7 +295,7 @@ describe('Issues', () => {
         });
     });
     it('should delete issue by id when success', (done) => {
-      let issue = new Issue ({
+      let issue = new Issue({
         title: "Test",
         priority: "Major",
         status: "TODO",
@@ -312,7 +311,6 @@ describe('Issues', () => {
       });
     });
   });
-
 
 
 });

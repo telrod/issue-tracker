@@ -5,7 +5,7 @@ import config from 'config';
 import fs from 'fs';
 import del from 'del';
 
-import { Issue, Document } from 'models';
+import {Issue, Document} from 'models';
 
 const router = new express.Router();
 const upload = multer({dest: config.uploadPath});
@@ -41,7 +41,7 @@ router.get('/', async (req, res, next) => {
   try {
     let issues = {};
     const query = req.query;
-    if(query) {
+    if (query) {
       issues = await Issue.find(query).populate('attachments');
     } else {
       issues = await Issue.find().populate('attachments');
@@ -77,10 +77,10 @@ router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
   try {
     let issue = await Issue.findById(id).populate('attachments');
-    if(issue) {
+    if (issue) {
       return res.send(issue);
     } else {
-      return res.status(404).json({msg:'Issue not found by id: ' + id})
+      return res.status(404).json({msg: 'Issue not found by id: ' + id})
     }
   } catch (err) {
     log.error("Error looking up issue with id: " + id, err);
@@ -129,10 +129,6 @@ router.post('/', async (req, res, next) => {
     res.set('Location', 'http://localhost:3000/issue/' + newIssue.id);
     return res.status(201).send(newIssue);
   } catch (err) {
-    // if (err.name === 'MongoError' && err.code === 11000) {
-    //   res.status(409).send(new MyError('Duplicate key', [err.message]));
-    // }
-    // res.status(500).send(err);
     log.error(err);
     next(err);
   }
@@ -260,13 +256,13 @@ router.patch('/:id', async (req, res, next) => {
  *       204:
  *         description: No content if successful
  */
-router.delete('/:id', async(req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   const id = req.params.id;
   try {
     log.info("delete id: " + id);
-    let issue = await Issue.findOneAndRemove({_id:id});
-    if(!issue) {
-      return res.status(404).json({msg:'Issue not found by id: ' + id});
+    let issue = await Issue.findOneAndRemove({_id: id});
+    if (!issue) {
+      return res.status(404).json({msg: 'Issue not found by id: ' + id});
     } else {
       return res.status(204).json({msg: 'Issue successfully deleted.'});
     }
@@ -310,7 +306,7 @@ router.delete('/:id', async(req, res, next) => {
  *         schema:
  *          $ref: '#/definitions/Document'
  */
-router.post('/:id/attachment', upload.single('attachment'), async(req, res, next) => {
+router.post('/:id/attachment', upload.single('attachment'), async (req, res, next) => {
   const id = req.params.id;
 
   try {
@@ -374,7 +370,7 @@ router.post('/:id/attachment', upload.single('attachment'), async(req, res, next
  *         schema:
  *          type: file
  */
-router.get('/:id/attachment/:attachmentId', async(req, res, next) => {
+router.get('/:id/attachment/:attachmentId', async (req, res, next) => {
   const id = req.params.id;
   const attachmentId = req.params.attachmentId;
   log.debug("getting document where issue id: " + id + " and attachment id " + attachmentId);
@@ -386,13 +382,14 @@ router.get('/:id/attachment/:attachmentId', async(req, res, next) => {
     if (!existingIssue) {
       return res.status(404).json({msg: 'Attachment not found.'});
     } else {
-        const document = await Document.findById(attachmentId);
-        if(document) {
-          res.setHeader('Content-Type', document.mimetype);
-          fs.createReadStream(document.path).pipe(res);
-        } else {
-          return res.status(404).json({msg: 'Attachment not found by id: ' + attachmentId});
-        }
+      // get the document entity which contains document path
+      const document = await Document.findById(attachmentId);
+      if (document) {
+        res.setHeader('Content-Type', document.mimetype);
+        fs.createReadStream(document.path).pipe(res);
+      } else {
+        return res.status(404).json({msg: 'Attachment not found by id: ' + attachmentId});
+      }
     }
   } catch (err) {
     log.error(err);
@@ -423,7 +420,7 @@ router.get('/:id/attachment/:attachmentId', async(req, res, next) => {
  *       204:
  *         description: No content if successful
  */
-router.delete('/:id/attachment/:attachmentId', async(req, res, next) => {
+router.delete('/:id/attachment/:attachmentId', async (req, res, next) => {
   const id = req.params.id;
   const attachmentId = req.params.attachmentId;
 
@@ -443,7 +440,7 @@ router.delete('/:id/attachment/:attachmentId', async(req, res, next) => {
       const deletedDocument = await Document.findByIdAndRemove(attachmentId);
       log.debug("deleted document: " + deletedDocument);
       // remove document from filesystem
-      if(deletedDocument) {
+      if (deletedDocument) {
         del.sync([deletedDocument.path]);
       }
 
@@ -493,7 +490,7 @@ router.delete('/:id/attachment/:attachmentId', async(req, res, next) => {
  *              type: string
  *              format: date-time
  */
-router.post('/:id/comment', async(req, res, next) => {
+router.post('/:id/comment', async (req, res, next) => {
   if (!req.is('application/json')) {
     return next(
       new Error("Expects Content-Type: 'application/json'")
@@ -555,7 +552,7 @@ router.post('/:id/comment', async(req, res, next) => {
  *                type: string
  *                format: date-time
  */
-router.get('/:id/comment', async(req, res, next) => {
+router.get('/:id/comment', async (req, res, next) => {
   const id = req.params.id;
 
   try {

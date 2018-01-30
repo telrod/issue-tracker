@@ -3,7 +3,7 @@ import sha1 from 'sha1';
 import randomstring from 'randomstring';
 import log from 'log';
 
-import { User } from 'models';
+import {User} from 'models';
 
 const router = new express.Router();
 
@@ -32,7 +32,7 @@ const router = new express.Router();
  */
 router.get('/', async (req, res) => {
   const users = await User.find();
-  return res.send({ users });
+  return res.send({users});
 });
 
 /**
@@ -61,7 +61,7 @@ router.get('/', async (req, res) => {
  *         description: useinfo including token
  */
 router.post('/login', async (req, res, next) => {
-  const { username, password } = req.body;
+  const {username, password} = req.body;
   try {
     const user = await User.findOne({
       username,
@@ -70,7 +70,7 @@ router.post('/login', async (req, res, next) => {
     if (user) {
       return res.send(user);
     }
-    next({ msg: 'wrong username or password', status: 401 });
+    next({msg: 'wrong username or password', status: 401});
   } catch (err) {
     next(err);
   }
@@ -103,12 +103,12 @@ router.post('/login', async (req, res, next) => {
  *         description: create new user
  */
 router.post('/create', async (req, res, next) => {
-  const { username, password } = req.body;
+  const {username, password} = req.body;
   try {
     const token = `Token ${randomstring.generate(20)}${Date.now()}${randomstring.generate(20)}`;
-    let user = await User.findOne({ username });
+    let user = await User.findOne({username});
     if (user) {
-      return next({ msg: 'user already existed', status: 403 });
+      return next({msg: 'user already existed', status: 403});
     }
     user = new User({
       username,

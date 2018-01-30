@@ -93,7 +93,7 @@ There are three run _modes_ in which the app can run; **develop**, **test**, and
 
 The following configurations can be updated within the ```config.js``` file.
 
-**Database** - Each of the modes utilize different mongodb databases; issue-tracker, issue-tracker-test, and issue-tracker-production.  By default, the configuration assumes mongodb is running locally and does not require a username/password.
+**Database** - Each of the modes utilize different mongodb databases; ```issue-tracker```, ```issue-tracker-test```, and ```issue-tracker-production```.  By default, the configuration assumes mongodb is running locally and does not require a username/password.
 
 ```
 mongodb: {
@@ -111,7 +111,7 @@ mongodb: {
 
 **Upload Path** - The directory in which uploaded attachment files will be stored on the local filesystem.  The default directories will be off the root project directory and are named ```uploads```, ```uploads-dev```, and ```uploads-test``` based on run mode.
 
-**Port** - The default port for running the application is 3000.
+**Port** - The default port for running the application is _3000_.
 
 **Logging** - The default log level is _trace_.
 
@@ -139,6 +139,5 @@ To view the API documentation, start the application and then navigate to [http:
 # TODO
 
 * Add pagination (e.g. mongoose-paginate)
-* Remove _id attribute from issue.comments array
 * Convert auth to use OAuth and require user for api calls so can add User as attribute to issue, attachment, and comment.
 

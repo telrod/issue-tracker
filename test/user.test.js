@@ -1,4 +1,3 @@
-
 import 'babel-polyfill';
 import app from '../src/main';
 import User from '../src/models/user';
@@ -96,7 +95,6 @@ describe('Users', () => {
         });
     });
   });
-
 
 
 });

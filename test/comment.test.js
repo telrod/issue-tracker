@@ -7,9 +7,9 @@ const expect = require('chai').expect;
 
 describe('Comments', () => {
   beforeEach((done) => { //Before each test we empty the database
-      Issue.remove({}, (err) => {
-        done();
-      });
+    Issue.remove({}, (err) => {
+      done();
+    });
   });
 });
 
@@ -71,24 +71,24 @@ describe('/GET comments', async () => {
               expect(res.body).to.be.a('array').that.is.not.empty;
               done();
             });
-    })
+        })
     });
   });
   it('should error with invalid issue id', (done) => {
     let comment = {
       message: 'This is a test comment'
     };
-      request.post('/issue/foo/comment')
-        .send(comment)
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(res.status).to.equal(400);
-          request.get('/issue/foo/comment')
-            .end((err, res) => {
-              if (err) return done(err);
-              expect(res.status).to.equal(400);
-              done();
-            });
-        });
+    request.post('/issue/foo/comment')
+      .send(comment)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).to.equal(400);
+        request.get('/issue/foo/comment')
+          .end((err, res) => {
+            if (err) return done(err);
+            expect(res.status).to.equal(400);
+            done();
+          });
+      });
   });
 });

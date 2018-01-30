@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import log from 'log';
 import config from '../config';
 
-const { host, database, user, password } = config.mongodb;
+const {host, database, user, password} = config.mongodb;
 let status = 'DISCONNETED';
 
 const init = () => {
@@ -38,4 +38,4 @@ const init = () => {
   }
 };
 
-export default { init };
+export default {init};

@@ -1,6 +1,9 @@
 import User from './user';
-export { User };
+
+export {User};
 import Document from './document';
-export { Document };
+
+export {Document};
 import Issue from './issue';
-export { Issue };
+
+export {Issue};
