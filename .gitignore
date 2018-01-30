@@ -71,3 +71,5 @@ temp/
 
 # Default directory for file uploads
 uploads/
+uploads-dev/
+uploads-test/

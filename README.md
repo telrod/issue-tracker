@@ -89,7 +89,7 @@ The _clean_, _build_, and _serve_ commands should be used for production mode.
 
 # Configuration
 
-There are three _modes_ in which the app can run; **develop**, **test**, and **production**.  These modes loosely define the type of environment in which the code will be run.  Which mode to use is defined by the ```NODE_ENV``` environment property and is already set within the run command scripts.
+There are three run _modes_ in which the app can run; **develop**, **test**, and **production**.  These modes loosely define the type of environment in which the code will be run.  Which mode to use is defined by the ```NODE_ENV``` environment property and is already set within the run command scripts.
 
 The following configurations can be updated within the ```config.js``` file.
 
@@ -109,7 +109,7 @@ mongodb: {
 }
 ```
 
-**Upload Path** - The directory in which uploaded attachment files will be stored on the local filesystem.  The default directory is ```uploads``` off the root project directory.
+**Upload Path** - The directory in which uploaded attachment files will be stored on the local filesystem.  The default directories will be off the root project directory and are named ```uploads```, ```uploads-dev```, and ```uploads-test``` based on run mode.
 
 **Port** - The default port for running the application is 3000.
 
@@ -138,8 +138,6 @@ To view the API documentation, start the application and then navigate to [http:
 
 # TODO
 
-* Finish CRUD (delete and update) for users
-* Delete uploaded files on local filesystem after running attachment tests
 * Add pagination (e.g. mongoose-paginate)
 * Remove _id attribute from issue.comments array
 * Convert auth to use OAuth and require user for api calls so can add User as attribute to issue, attachment, and comment.
